@@ -7,20 +7,16 @@ import java.util.Scanner;
 public class CombineTwoArr {
     public ArrayList<Integer> solution(int[]arr1, int[]arr2){
         ArrayList<Integer> answer = new ArrayList<>();
-        // 첫번째 저장 값
         int a1P = 0, a2P = 0;
-        while(a1P<arr1.length || a2P<arr2.length){
-            if(arr1[a1P]>=arr2[a2P]) {
-                answer.add(arr2[a2P]);
-                a2P++;
-            }else if(arr1[a1P]<arr2[a2P]){
-                answer.add(arr1[a1P]);
-                a1P++;
-            }else {
-                answer.add(arr2[a2P]);
-                a2P++;
-            }
+        // 둘 중 하나라도 포인터가 배열 크기보다 넘어서면 종료
+        while(a1P<arr1.length && a2P<arr2.length){
+            if(arr1[a1P]>arr2[a2P]) {
+                answer.add(arr2[a2P++]);
+            }else answer.add(arr1[a1P++]);
         }
+        // 남은 원소 넣어주기
+        while(a1P<arr1.length) answer.add(arr1[a1P++]);
+        while(a2P<arr2.length) answer.add(arr2[a2P++]);
         return answer;
     }
     public static void main(String[] args) {
