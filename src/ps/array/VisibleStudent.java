@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class VisibleStudent {
     public int solution(int n, int[] arr) {
-        int answer = 0;
-        int max = Integer.MIN_VALUE;
+        int answer = 1, max = arr[0];
 
         for (int i = 0; i < arr.length; i++) {
             if(arr[i]> max) {
