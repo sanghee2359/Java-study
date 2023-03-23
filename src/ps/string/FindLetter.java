@@ -10,10 +10,9 @@ public class FindLetter {
         str = str.toLowerCase();
         c = Character.toLowerCase(c);
 
-        // equals() 메소드 비교
-        for (int i = 0; i < str.length(); i++) {
-            char cur = str.charAt(i);
-            if(cur==c) answer++;
+        // 값 비교
+        for(char x : str.toCharArray()){
+            if(x==c) answer++;
         }
         return answer;
     }
