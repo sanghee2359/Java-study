@@ -8,20 +8,16 @@ public class RemoveParentheses {
     public String solution(String str) {
         String answer = "";
         Stack<Character> stack = new Stack<>();
-        // 괄호가 열리면
-        for (int i = 0; i < str.length(); i++) {
-            if(str.charAt(i)=='(') stack.push('(');
-            else if(str.charAt(i)==')') {
-                while(stack.peek()=='('){
-                    char cur = stack.peek();
-                    System.out.println(cur);
-                    stack.pop();
-                }
+
+        for (char x : str.toCharArray()) {
+        // 닫힌 괄호 만나면 여는 괄호를 만날 때까지 pop
+            if(x ==')'){
+                while(stack.pop()!='(');
             }
-            else stack.push(str.charAt(i));
+            else stack.push(x);
         }
         for (int i = 0; i < stack.size(); i++) {
-            System.out.printf(stack.pop()+" ");
+            answer += stack.get(i);
         }
         return answer;
     }
