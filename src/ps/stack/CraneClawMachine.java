@@ -14,24 +14,20 @@ public class CraneClawMachine {
         int answer = 0;
         Stack<Integer> basket = new Stack<>();
         // board
-        for (int i = 0; i < moves.length; i++) {
-            int curIdx = moves[i]-1;
-            int curStack = 0;
-            if(!basket.isEmpty()) curStack = basket.peek();
+        for(int pos : moves) {
             // 위에서부터 검색
-            for (int j = 0; j < board.length; j++) {
-//                System.out.println(board[j][cur]);
+            for (int i = 0; i < board.length; i++) {
+                int tmp = board[i][pos-1];
+                board[i][pos-1] = 0;
                 // 0이 아닌 최상단 값 스택에 넣고, 0으로 교체
-                if(board[j][curIdx] != 0) {
+                if(tmp != 0) {
                     // 스택의 이전과 같은 번호이면 삭제, 그리고 answer++
-                    if(board[j][curIdx] == curStack) {
+                    if(!basket.isEmpty() && tmp == basket.peek()) {
                         basket.pop();
                         answer+=2;
                     }
                     // 번호가 다르면 스택에 저장
-                    else basket.push(board[j][curIdx]);
-                    // 0으로 변경
-                    board[j][curIdx] = 0;
+                    else basket.push(tmp);
 
                     break;
                 }
