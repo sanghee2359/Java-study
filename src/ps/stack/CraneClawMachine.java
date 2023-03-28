@@ -3,7 +3,6 @@ package ps.stack;
 // 이때 바구니의 가장 아래 칸부터 인형이 순서대로 쌓이게 됩니다.
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -24,20 +23,18 @@ public class CraneClawMachine {
 //                System.out.println(board[j][cur]);
                 // 0이 아닌 최상단 값 스택에 넣고, 0으로 교체
                 if(board[j][curIdx] != 0) {
-                    basket.push(board[j][curIdx]);
+                    // 스택의 이전과 같은 번호이면 삭제, 그리고 answer++
+                    if(board[j][curIdx] == curStack) {
+                        basket.pop();
+                        answer+=2;
+                    }
+                    // 번호가 다르면 스택에 저장
+                    else basket.push(board[j][curIdx]);
+                    // 0으로 변경
                     board[j][curIdx] = 0;
 
                     break;
                 }
-                // 모두 0일 경우는?
-            }
-            System.out.println();
-            // 스택의 이전과 같은 번호이면 삭제, 그리고 answer++
-            if(basket.peek()==curStack) {
-                basket.pop();
-                basket.pop();
-                answer++;
-
             }
         }
 
