@@ -4,19 +4,15 @@ import java.util.Scanner;
 
 public class TheLargestSales {
     public int solution(int n, int k, int[] arr){
-        int answer = 0;
-        int lt = 0, rt = k-1;
-        int max = Integer.MIN_VALUE;
-        while(rt < n){
-            int sum = 0;
-            for (int i = lt; i <= rt ; i++) {
-                sum += arr[i];
-            }
-            if(max < sum) max = sum;
-            rt++;
-            lt++;
+        int answer = 0, sum = 0;
+        for (int i = 0; i < k; i++) {
+            sum += arr[i];
         }
-        answer = max;
+        answer = sum; // 초기값 = 첫번째 매출합
+        for (int i = k; i < n; i++) {
+            sum+=(arr[i]-arr[i-k]);
+            answer = Math.max(answer, sum);
+        }
         return answer;
     }
     public static void main(String[] args) {
