@@ -12,23 +12,18 @@ public class FindAllAnagrams {
         int answer = 0;
         Map<Character, Integer> tm = new HashMap<>();
         Map<Character, Integer> sm = new HashMap<>();
-        // t문자열을 넣는 map 생성
-        for (int i = 0; i < t.length(); i++) {
-            tm.put(t.charAt(i), tm.getOrDefault(t.charAt(i), 0)+1);
-        }
-        // s문자열을 넣어 비교하기 위한 map 생성
-        for (int i = 0; i < t.length()-1; i++) {
-            sm.put(s.charAt(i), sm.getOrDefault(s.charAt(i), 0)+1);
-        }
-        // 왼쪽부터 sliding window를 이용하여 비교
+        for (char x : t.toCharArray()) tm.put(x, tm.getOrDefault(x, 0)+1);
+        // s문자열 map
+        int L = t.length()-1;
+        for (int i = 0; i < L; i++) sm.put(s.charAt(i), sm.getOrDefault(s.charAt(i), 0)+1);
+        // 비교 (sliding window)
         int lt = 0;
-        for (int rt = t.length()-1; rt < s.length(); rt++) {
+        for (int rt = L; rt < s.length(); rt++) {
             sm.put(s.charAt(rt), sm.getOrDefault(s.charAt(rt), 0)+1);
-            // map과 t를 비교
             if(sm.equals(tm)) answer++;
-            // 왼쪽 올리기
-            sm.put(s.charAt(lt),sm.get(s.charAt(lt))-1); // 왼쪽 -1제거(한 칸이동)
-            if(sm.get(s.charAt(lt))==0) sm.remove(s.charAt(lt)); // 값이 없다면 삭제
+            // 왼쪽 한칸이동
+            sm.put(s.charAt(lt),sm.get(s.charAt(lt))-1);
+            if(sm.get(s.charAt(lt))==0) sm.remove(s.charAt(lt));
             lt++;
         }
         return answer;
