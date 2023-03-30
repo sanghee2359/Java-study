@@ -10,24 +10,25 @@ import java.util.Scanner;
 public class FindAllAnagrams {
     public int solution(String s, String t) {
         int answer = 0;
-        Map<Character, Integer> HM = new HashMap<>();
-        // t문자열-1크기만큼 s문자열을 map에 저장
+        Map<Character, Integer> tm = new HashMap<>();
+        Map<Character, Integer> sm = new HashMap<>();
+        // t문자열을 넣는 map 생성
+        for (int i = 0; i < t.length(); i++) {
+            tm.put(t.charAt(i), tm.getOrDefault(t.charAt(i), 0)+1);
+        }
+        // s문자열을 넣어 비교하기 위한 map 생성
         for (int i = 0; i < t.length()-1; i++) {
-            HM.put(s.charAt(i), HM.getOrDefault(s.charAt(i), 0)+1);
+            sm.put(s.charAt(i), sm.getOrDefault(s.charAt(i), 0)+1);
         }
         // 왼쪽부터 sliding window를 이용하여 비교
         int lt = 0;
         for (int rt = t.length()-1; rt < s.length(); rt++) {
-            HM.put(s.charAt(rt), HM.getOrDefault(s.charAt(rt), 0)+1);
+            sm.put(s.charAt(rt), sm.getOrDefault(s.charAt(rt), 0)+1);
             // map과 t를 비교
-            int count = 0;
-            for(char x : t.toCharArray()){ // t와 같은 문자가 없거나, 키의 값이 0이라면
-                if(!HM.containsKey(x) || HM.get(x)==0) continue;
-                count++;
-            }
-            if(count==t.length()) answer++;
-            HM.put(s.charAt(lt),HM.get(s.charAt(lt))-1); // 왼쪽 -1제거(한 칸이동)
-            if(HM.get(s.charAt(lt))==0) HM.remove(s.charAt(lt)); // 값이 없다면 삭제
+            if(sm.equals(tm)) answer++;
+            // 왼쪽 올리기
+            sm.put(s.charAt(lt),sm.get(s.charAt(lt))-1); // 왼쪽 -1제거(한 칸이동)
+            if(sm.get(s.charAt(lt))==0) sm.remove(s.charAt(lt)); // 값이 없다면 삭제
             lt++;
         }
         return answer;
