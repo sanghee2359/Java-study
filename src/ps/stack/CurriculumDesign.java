@@ -16,11 +16,9 @@ public class CurriculumDesign {
         for (char x : subject.toCharArray()) {
             if(Q.contains(x)) {
                 if(Q.poll()!=x) return "NO";
-                else Q.poll();
             }
-            else System.out.println(x);
         }
-        if(!Q.isEmpty()) return "NO";
+        if(!Q.isEmpty()) return "NO"; // 필수과목을 이수하지 않은 경우
         return answer;
     }
     public static void main(String[] args) {
