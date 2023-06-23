@@ -21,21 +21,13 @@ public class FindingRank {
     private int[] solution(int num, int[] score) {
         int answer[] = new int[num];
         // 등수 비교를 어떤걸로 할 것인지
-        for (int i = 0; i < score.length; i++) {
+        for (int i = 0; i < num; i++) {
             int rank = 1;
-            int max = Integer.MIN_VALUE;
             for (int j = 0; j < score.length; j++) {
-//                if(max == score[j]) {
-//                    max = score[j];
-//                }else
-                if(score[j] > score[i]) {
-                    max = score[j];
-                    rank++;
-                }
+                if(score[j] > score[i]) rank++;
             }
             answer[i] = rank;
         }
-
         return answer;
     }
 }
