@@ -22,23 +22,13 @@ public class Password {
 //        }
     }
 
-    private char[] solution(int num, String pw) {
-        char[] answer = new char[num];
-        int[] divide = new int[num];
-        // 먼저 대체하고 보자
-        pw = pw.replaceAll("[*]","0");
-        pw = pw.replaceAll("[#]","1");
-        // 분해 및 2진수 만들기
-        for (int i = 0; i < num-1; i++) {
-            divide[i] = Integer.parseInt(pw.substring(0,7), 2); // 2진수 만들기
-            pw = pw.substring(7);
-        }
-        // 마지막 2진수 저장
-        divide[num-1] = Integer.parseInt(pw, 2);
-
-        // 문자열 저장
+    private String solution(int num, String pw) {
+        String answer = "";
         for (int i = 0; i < num; i++) {
-            answer[i] = (char)divide[i];
+            String temp = pw.substring(0,7).replace('#','1').replace('*','0');
+            pw = pw.substring(7);
+            int binary = Integer.parseInt(temp, 2);
+            answer += (char)binary;
         }
 
         return answer;
