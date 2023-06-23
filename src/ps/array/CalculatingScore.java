@@ -21,25 +21,15 @@ public class CalculatingScore {
     }
 
     private int solution(int num, int[] result) {
-        int answer = 0;
-        int score[] = new int[num+1];
-        int count = 1;
-        // i와 i+1 비교
+        int answer = 0, count = 0;
         for (int i = 0; i < num; i++) {
-            if(result[i] == result[i+1] && (result[i] == 1)) {
-                score[i] = count++;
+            if(result[i] == 1) {
+                count++;
+                answer += count;
             }
-            else if(result[i] != result[i+1] && result[i]==1){
-                score[i] = count;
-                count = 1;
-            }else { //result[i]==0
-                score[i] = 0;
-            }
+            else count = 0;
         }
-        System.out.println(Arrays.toString(score));
-        for (int i = 0; i < score.length; i++) {
-            answer += score[i];
-        }
+
         return answer;
     }
 }
