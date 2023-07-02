@@ -1,7 +1,8 @@
 package ps.string;
 
 import java.util.Scanner;
-
+// 임의의 문자열 str로 회문을 만들기
+// 문자열 str 뒤에 0개 이상의 숫자를 추가해 회문을 생성하고, 가장 짧은 회문의 길이를 출력
 public class PalindromeString {
     public static void main(String[] args) {
         PalindromeString T = new PalindromeString();
