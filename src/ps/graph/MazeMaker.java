@@ -1,5 +1,7 @@
 package ps.graph;
 
+import ps.array.MaximumSum;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -35,5 +37,24 @@ public class MazeMaker {
                 }
             }
         }
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if(maze[i].charAt(j) == '.' && board[i][j] == -1) {
+                    return -1;
+                }
+                max = Math.max(max, board[i][j]);
+            }
+        }
+        return max;
+    }
+
+    public static void main(String[] args) {
+        MazeMaker T = new MazeMaker();
+        String[] maze = {"...", "...", "..."};
+        int startRow = 0;
+        int startCol = 1;
+        int[] moveRow = {1, 0, -1, 0, 1, 1, -1, -1};
+        int[] moveCol = {0, 1, 0, -1, 1, -1, 1, -1};
+        System.out.println(T.longestPath(maze, startRow, startCol, moveRow, moveCol));
     }
 }
