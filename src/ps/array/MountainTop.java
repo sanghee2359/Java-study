@@ -25,7 +25,7 @@ public class MountainTop {
             for (int j = 0; j < n; j++) {
                 boolean flag = true;
                 for (int k = 0; k < 4; k++) {
-                    int nx = i+dx[k];
+                    int nx = i+dx[k]; //왜 이런식으로 더했던거지?
                     int ny = j+dy[k];
                     if(nx >= 0 && nx < n && ny >=0 && ny < n &&
                             area[nx][ny] >= area[i][j]) {
