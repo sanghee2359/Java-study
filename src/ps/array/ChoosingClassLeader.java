@@ -13,9 +13,9 @@ public class ChoosingClassLeader {
         ChoosingClassLeader T = new ChoosingClassLeader();
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        int[][] board = new int[n+1][n+1];
+        int[][] board = new int[n+1][6];
         for (int i = 1; i < n+1; i++) {
-            for (int j = 1; j < n+1; j++) {
+            for (int j = 1; j < 6; j++) {
                 board[i][j] = sc.nextInt();
             }
         }
