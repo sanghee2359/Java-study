@@ -8,8 +8,8 @@ public class FindLetter {
         int answer = 0;
         str = str.toUpperCase();
         let = Character.toUpperCase(let);
-        for (int i = 0; i < str.length(); i++) {
-            if(let == str.charAt(i)) answer++;
+        for(char x : str.toCharArray()){
+            if(x == let) answer++;
         }
 //        System.out.println(answer);
         return answer;
