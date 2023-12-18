@@ -5,14 +5,17 @@ import java.util.*;
 public class SelectionSort {
     private int[] Sort(int num, int[] each){
         for (int i = 0; i < num; i++) {
-            for (int j = 0; j < num-1; j++) {
-                if(each[j] > each[j+1]) {
-                    int tmp = 0;
-                    tmp = each[j];
-                    each[j] = each[j+1];
-                    each[j+1] = tmp;
+            int idx = i; //최소값의 index를 저장할 변수
+            for (int j = i+1; j < num; j++) {
+                if(each[j] < each[idx]) {
+                    idx = j;
                 }
             }
+            // i의 위치와 최소값의 swap
+            int tmp = 0;
+            tmp = each[idx];
+            each[idx] = each[i];
+            each[i] = tmp;
         }
 
         return each;
@@ -23,6 +26,7 @@ public class SelectionSort {
         Scanner in = new Scanner(System.in);
         int num = in.nextInt();
         int[] each = new int[num];
+
         for (int i = 0; i < num; i++) {
             each[i] = in.nextInt();
         }
