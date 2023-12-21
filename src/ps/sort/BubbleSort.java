@@ -4,16 +4,14 @@ import java.util.Scanner;
 
 public class BubbleSort {
     public int[] Sort(int num, int[] arr) {
-        int idx = num-1;
         for (int i = 0; i < num-1; i++) {
-            for (int j = 0; j < idx; j++) {
+            for (int j = 0; j < num-i-1; j++) { // i가 1씩 증가함에 따라 j의 최대도 1씩 감소
                 if (arr[j] > arr[j + 1]) {
                     int tmp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = tmp;
                 }
             }
-            idx--; // n회전 할 때마다 1감소
         }
         return arr;
     }
