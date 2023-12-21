@@ -4,27 +4,26 @@ import java.util.*;
 
 public class LRU {
     private int[] Sort(int size, int[] arr) {
-        Queue<Integer> cache = new LinkedList<>();
-        ArrayList<Integer> answer = new ArrayList<>();
-
-        for (int i = 0; i < arr.length; i++) {
-            if(cache.size() == size) cache.poll();
-            else if (cache.contains(arr[i])){
-                cache.remove(arr[i]);
-            }
-            cache.add(arr[i]);
-        }
-        for (int i = 0; i < size; i++) {
-            answer.add(cache.poll());
-        }
-        Collections.reverse(answer);
-        int[] answerArr = new int[size];
-        int idx = 0;
+        int[] cache = new int[size];
+        // cache hit 체크
         for (int x:
-             answer) {
-            answerArr[idx++] = x;
+             arr) {
+            int pos = -1;
+            for (int i = 0; i < size; i++) if(x == cache[i]) pos=i; // hit된 지점을 저장
+            if(pos == -1) {
+                for (int j = size-1; j >= 1; j--) {
+                    // cache miss
+                    cache[j] = cache[j-1];
+                }
+            }else {
+                for (int j = pos; j >= 1; j--) {
+                    // cache miss
+                    cache[j] = cache[j-1];
+                }
+            }
+            cache[0] = x;
         }
-        return answerArr;
+        return cache;
     }
     public static void main(String[] args) {
         LRU O = new LRU();
