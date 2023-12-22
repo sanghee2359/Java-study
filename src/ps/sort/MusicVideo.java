@@ -1,17 +1,15 @@
 package ps.sort;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 // live video 만들어 판매한다.
 // DVD에는 총 N개의 곡이 들어가는데, 녹화할 때 라이브에서의 순서와 동일하다
 // 고민 끝에 지니레코드는 M개의 DVD에 모든 동영상을 녹화하기로 하였다.
 // 이 때 DVD의 크기(녹화 가능한 길이)를 최소로 하려고 한다.
 
 public class MusicVideo {
-    private int MinimumVolume(int n, int m, int[] arr) {
+    private int MinimumVolume(int m, int[] arr) {
         int answer = 0;
-        // 정렬 먼저
-        Arrays.sort(arr);
+
         int lt = Arrays.stream(arr).max().getAsInt(); // 해당 배열 중 가장 큰 숫자
         int rt = Arrays.stream(arr).sum();
         while(lt <= rt) {
@@ -44,7 +42,7 @@ public class MusicVideo {
         for (int i = 0; i < num; i++) {
             arr[i] = in.nextInt();
         }
-        System.out.println(O.MinimumVolume(num, m, arr));
+        System.out.println(O.MinimumVolume(m, arr));
     }
 
 }
