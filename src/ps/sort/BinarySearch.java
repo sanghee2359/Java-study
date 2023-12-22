@@ -18,12 +18,15 @@ public class BinarySearch {
              arr) {
             System.out.print(x+" ");
         }
+        int lt = 0, rt = num-1;
         while(answer == 0) {
-            int tmp = arr.length/2; // 가운데 값 저장
-            if(arr[tmp] > value) {
-                arr = Arrays.copyOfRange(arr, 0, arr.length/2);
-            } else if(arr[tmp] == value) answer = tmp+1;
-            else arr = Arrays.copyOfRange(arr, num/2, num);
+            int mid = (lt + rt) / 2;
+            if(arr[mid] > value) {
+                rt = mid-1;
+            } else if(arr[mid] < value){
+                lt = mid+1;
+            }
+            else if(arr[mid] == value) answer = mid+1; // mid는 배열 인덱스 번호이므로 +1
         }
         return answer;
     }
