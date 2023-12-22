@@ -12,23 +12,28 @@ public class MusicVideo {
         int answer = 0;
         // 정렬 먼저
         Arrays.sort(arr);
-        int volume = 0;
-        for (int i = 0; i < n; i++) { // m은 dvd 개수
-            volume+=arr[i];
+        int lt = Arrays.stream(arr).max().getAsInt(); // 해당 배열 중 가장 큰 숫자
+        int rt = Arrays.stream(arr).sum();
+        while(lt <= rt) {
+            int mid = (lt+rt) / 2;
+            if(count(arr, mid) <= m) {
+                answer = mid;
+                rt = mid-1;
+            } else lt = mid+1;
         }
-
-        int tmp = 0;
-        for (int i = 0; i < n; i++) {
-            if(tmp == volume/m) {
-                answer = tmp;
-                tmp = 0;
-            }else if(tmp > volume/m){
-                i = i-1;
-                tmp = 0;
-            }
-            tmp += arr[i];
+        return answer;
+    }
+    // dvd 용량이 주어질 때 dvd가 총몇장 필요한지 출력하는 메소드
+    public int count(int[] arr, int capacity) {
+        // cnt = dvd 장 수
+        int cnt = 1, sum = 0; // 현재까지 저장된 dvd 용량
+        for (int x : arr) {
+            if(sum+x > capacity) {
+                cnt++;
+                sum = x; // 초기화
+            }else sum+= x;
         }
-        return answer= tmp;
+        return cnt;
     }
     public static void main(String[] args) {
         MusicVideo O = new MusicVideo();
