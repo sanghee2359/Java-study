@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Fibonacci {
     static int[] fibo;
     public int DFS(int num) {
+        if(fibo[num] > 0) return fibo[num];
         if(num == 1) return fibo[1] = 1;
         else if(num == 2) return fibo[2] = 1;
         else {
