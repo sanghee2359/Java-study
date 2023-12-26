@@ -24,9 +24,9 @@ public class FindACalf {
             int len = Q.size();
             for (int i = 0; i < len; i++) {
                 int cur = Q.poll();
-                if(cur == calf) return level;
                 for (int j = 0; j < 3; j++) {
                     int next = cur+dis[j];
+                    if(next == calf) return level+1;
                     if(next>= 1 && next<= 10000
                             && visited[next]==0){
                         visited[next] = 1;
