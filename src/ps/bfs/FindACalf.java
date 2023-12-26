@@ -12,18 +12,27 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class FindACalf {
+    int[] visited;
+    int[] dis = {1, -1, 5};
     public int BFS(int site, int calf){
         int level = 0;
         Queue<Integer> Q = new LinkedList<>();
+        visited = new int[10001]; // 최대 : 10000
+        visited[site] = 1;
         Q.offer(site);
         while(!Q.isEmpty()){
             int len = Q.size();
             for (int i = 0; i < len; i++) {
                 int cur = Q.poll();
                 if(cur == calf) return level;
-                Q.offer(cur+1);
-                Q.offer(cur-1);
-                Q.offer(cur+5);
+                for (int j = 0; j < 3; j++) {
+                    int next = cur+dis[j];
+                    if(next>= 1 && next<= 10000
+                            && visited[next]==0){
+                        visited[next] = 1;
+                        Q.offer(next);
+                    }
+                }
             }
             level++;
         }
