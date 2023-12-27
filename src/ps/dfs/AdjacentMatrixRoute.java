@@ -25,10 +25,10 @@ public class AdjacentMatrixRoute {
     public static void main(String[] args) {
         AdjacentMatrixRoute O = new AdjacentMatrixRoute();
         Scanner in = new Scanner(System.in);
-        n = in.nextInt(); // 행
-        m = in.nextInt(); // 열
+        n = in.nextInt(); // 정점의 수
+        m = in.nextInt(); // 간선의 수
         // node를 인덱스로 사용하므로, 1부터 시작
-        graph = new int[n+1][m+1];
+        graph = new int[n+1][n+1];
         visited = new int[n+1];
         for (int i = 0; i < m; i++) {
             int a = in.nextInt();
