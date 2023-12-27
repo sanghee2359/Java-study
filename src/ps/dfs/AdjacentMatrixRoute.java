@@ -9,9 +9,10 @@ public class AdjacentMatrixRoute {
     public void DFS(int v) {
         if(v == n) {
             answer ++;
+            System.out.println("hello");
         }
         else {
-            for (int i = v; i <= n; i++) {
+            for (int i = 1; i <= n; i++) {
                 if(graph[v][i] == 1 && visited[i] == 0) {
                     visited[i] = 1;
                     DFS(i);
