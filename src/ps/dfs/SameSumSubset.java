@@ -7,27 +7,30 @@ import java.util.Scanner;
 //
 //두 부분집합의 원소의 합이 서로 같은 경우가 존재하면 “YES"를 출력하고, 그렇지 않으면 ”NO"를 출력하는 프로그램을 작성하세요.
 public class SameSumSubset {
-    static int whole;
+    static int n, whole;
     static String answer = "NO";
-    static int[] arr;
-    public void DFS(int n, int sum) {
-        if(n == arr.length-1) {
+    boolean flag = false; // Yes가 발견된 다음 재귀는 모두 return
+    public void DFS(int L, int sum, int[] arr) {
+        if(flag) return;
+        if(sum > whole/2) return; //sum이 전체합의 절반을 넘을 때 조건을 충족시킬 수 없으므로 return
+        if(L == n) {
             System.out.println("a:"+sum);
             System.out.println("b:"+(whole - sum));
-            if(sum == (whole-sum)) answer = "YES";
+            if(sum == (whole-sum)) {
+                answer = "YES";
+                flag = true;
+            }
         }
         else {
-            sum += arr[n];
-            DFS(n+1, sum);
-            sum -= arr[n];
-            DFS(n+1, sum);
+            DFS(L+1, sum += arr[L], arr);
+            DFS(L+1, sum, arr);
         }
     }
     public static void main(String[] args) {
         SameSumSubset O = new SameSumSubset();
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
-        arr = new int[n];
+        int[] arr = new int[n];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = in.nextInt();
         }
@@ -35,7 +38,7 @@ public class SameSumSubset {
             whole += arr[i];
         }
         int sum = 0;
-        O.DFS(0, sum);
+        O.DFS(0, sum, arr);
         System.out.println(answer);
     }
 }
