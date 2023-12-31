@@ -7,9 +7,10 @@ import java.util.Scanner;
 // 거슬러 줄 금액 : 1 <= m <= 500
 public class CoinExchange {
     static int n, m, answer = Integer.MAX_VALUE;
-//    static int[] arr;
+
     public void DFS(int L, int sum, int[] arr) {
         if(sum > m) return;
+        if(L >= answer) return;
         if(sum == m) {
             answer = Math.min(L, answer);
         }else {
