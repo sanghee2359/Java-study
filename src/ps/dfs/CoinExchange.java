@@ -1,5 +1,7 @@
 package ps.dfs;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 // 여러 단위의 동전들이 주어져 있을때 거스름돈을 가장 적은 수의 동전으로 교환해주는 프로그램
@@ -8,7 +10,7 @@ import java.util.Scanner;
 public class CoinExchange {
     static int n, m, answer = Integer.MAX_VALUE;
 
-    public void DFS(int L, int sum, int[] arr) {
+    public void DFS(int L, int sum, Integer[] arr) {
         if(sum > m) return;
         if(L >= answer) return;
         if(sum == m) {
@@ -23,10 +25,11 @@ public class CoinExchange {
         CoinExchange O = new CoinExchange();
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
-        int[] arr = new int[n];
+        Integer [] arr = new Integer[n];
         for (int i = 0; i < n; i++) {
             arr[i] = sc.nextInt();
         }
+        Arrays.sort(arr, Collections.reverseOrder());
         m = sc.nextInt();
         O.DFS(0, 0, arr);
         System.out.println(answer);
