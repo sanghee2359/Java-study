@@ -7,10 +7,11 @@ import java.util.Scanner;
 
 //N마리의 바둑이와 각 바둑이의 무게 W가 주어지면, 철수가 트럭에 태울 수 있는 가장 무거운 무게를 구하는 프로그램을 작성하세요.
 public class DogRide {
-    static int n, c, answer= 0;
+    static int n, c, answer= Integer.MIN_VALUE;
     public void DFS(int L, int sum, int[] arr) {
+        if(sum > c) return;
         if(L == n) {
-            if(c >= sum && answer < sum) answer = sum;
+            answer = Math.max(answer, sum);
         }
         else {
             DFS(L+1, sum+arr[L], arr);
