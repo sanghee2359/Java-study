@@ -7,20 +7,14 @@ import java.util.Scanner;
 // 거슬러 줄 금액 : 1 <= m <= 500
 public class CoinExchange {
     static int n, m, answer = Integer.MAX_VALUE;
-    static int[] arr;
-    public void DFS(int L, int sum) {
-        if(sum > 15) {
-            return;
-        }
-        if(sum == m && L >0) {
-            if(answer > L) {
-                answer = L;
-            }
+//    static int[] arr;
+    public void DFS(int L, int sum, int[] arr) {
+        if(sum > m) return;
+        if(sum == m) {
+            answer = Math.min(L, answer);
         }else {
             for (int i = 0; i < n; i++) {
-                DFS(L+1, sum+= arr[i]);
-                L -= 1;
-                sum -= arr[i];
+                DFS(L+1, sum + arr[i], arr);
             }
         }
     }
@@ -28,12 +22,12 @@ public class CoinExchange {
         CoinExchange O = new CoinExchange();
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
-        arr = new int[n];
-        for (int i = n-1; i >= 0; i--) {
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
             arr[i] = sc.nextInt();
         }
         m = sc.nextInt();
-        O.DFS(0, 0);
+        O.DFS(0, 0, arr);
         System.out.println(answer);
     }
 }
