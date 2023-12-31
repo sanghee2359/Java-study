@@ -7,16 +7,13 @@ public class PermutationRepetition {
     static int [] arr;
     public void DFS(int L) {
         if(L == m) {
-            for (int x: arr) {
-                System.out.printf(x+" ");
-            }
+            for (int x: arr) System.out.printf(x+" ");
             System.out.println();
         }
         else{
             for (int i = 1; i <= n; i++) {
                 arr[L] = i;
                 DFS(L+1);
-                arr[L] = 0;
             }
         }
     }
