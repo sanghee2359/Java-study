@@ -14,6 +14,10 @@ public class GuessingTheSequence {
         if(L==n) {
             if(sum==f) {
                 for (int x:p) {
+                    if(ch[i] == 0){
+                        ch[i] == 0
+                        P[L] = i;
+                    }
 
                 }
             }
