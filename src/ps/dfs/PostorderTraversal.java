@@ -1,5 +1,6 @@
 package ps.dfs;
 // 이진 트리 dfs 후위 순회
+// dfs는 stack을 활용하여 순회한다.
 public class PostorderTraversal {
     Node root;
     public void DFS(Node root){
