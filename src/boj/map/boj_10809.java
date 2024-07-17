@@ -1,4 +1,4 @@
-package boj.input_output;
+package boj.map;
 
 import java.io.BufferedReader;
 import java.io.IOException;
