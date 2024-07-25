@@ -3,17 +3,12 @@ package boj.input_output;
 import java.util.Scanner;
 
 public class boj_2869 {
-    public static int solve(int A, int B, int V) {
-        int sum = 0;
-        int count = 0;
-        while(sum < V) {
-            count++;
-            sum += A;
-            if(sum >= V) break;
-            sum -= B;
-
+    public static int solve(int up, int down, int length) {
+        int day = (length - down) / (up - down);
+        if((length - down) % (up - down) != 0) {
+            day++;
         }
-        return count;
+        return day;
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
