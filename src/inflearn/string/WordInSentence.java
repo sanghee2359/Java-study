@@ -13,11 +13,14 @@ public class WordInSentence {
         String answer = "";
 
         int pos = 0;
-        while(!((pos = str.indexOf(" ")) == -1)) {
+        while((pos = str.indexOf(" ")) != -1) {
             String tmp = str.substring(0, pos);
             str = str.substring(pos+1);
 
-            if(tmp.length() > max) answer = tmp;
+            if(tmp.length() > max) {
+                max = tmp.length();
+                answer = tmp;
+            }
         }
         if(str.length() > max) answer = str;
         System.out.println(answer);
