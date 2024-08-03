@@ -13,8 +13,8 @@ public class findCharacter {
 
         int sum = 0;
 
-        for (int i = 0; i < str.length(); i++) {
-            if(str.charAt(i) == c) sum++;
+        for (char x : str.toCharArray()) {
+            if(c==x) sum++;
         }
 
         System.out.println(sum);
