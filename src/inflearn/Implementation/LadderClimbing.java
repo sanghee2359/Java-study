@@ -4,29 +4,17 @@ import java.util.*;
 public class LadderClimbing {
     public char[] solution(int n, int[][] ladder){
         char[] answer = new char[n];
-        int[] mid_answer = new int[n];
-        for (int i = 1; i <= n; i++) {
-            int k = i;
-            for (int j = 0; j < ladder.length; j++) {
-                // ladder의 첫번째 가로줄과 겹치는 경우
-                for (int l = 0; l < ladder[j].length; l++) {
-                    if (k == ladder[j][l]) {
-                        k++;
-                        break;
-                    }
-                    if (k == ladder[j][l] + 1) {
-                        k--;
-                        break;
-                    }
-                }
-            }
-            mid_answer[i-1] = k;
-
+        for (int i = 0; i < n; i++) {
+            answer[i] = (char)(i+65);
         }
-        int idx = 0;
-        for (int i = 'A'; i <= 'Z'; i++) {
-            if(idx == n) break;
-            answer[mid_answer[idx++] - 1] = (char) i;
+        // 모든 세로줄에서 아래로 하나씩 내려가면서
+        for (int[] line : ladder) { // 가로줄을 만나면 이전의 알파벳과 교체
+            for (int x:
+                 line) {
+                char tmp = answer[x];
+                answer[x] = answer[x-1];
+                answer[x-1] = tmp;
+            }
         }
         return answer;
     }
