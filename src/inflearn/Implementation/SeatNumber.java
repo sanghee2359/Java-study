@@ -6,35 +6,27 @@ public class SeatNumber {
         if(c * r < k) {
             return answer;
         }
-        boolean [][] visited = new boolean[r][c];
-        for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
-                visited[i][j] = false;
-            }
-        }
-        // 시작 위치 : 제일 왼쪽 & 제일 아래
-        // x좌표? r-1, y좌표 0
-        int[] dx = {1, 0, -1, 0};
+        // 90도 뒤집어서 계산
+        int [][] seat = new int[c][r]; // 세로 c, 가로 r (변경됨)
+
+        int[] dx = {-1, 0, 1, 0};
         int[] dy = {0, 1, 0, -1};
         int x = 0, y = 0, d = 0, count = 1;
-        while(count <= c * r) {
-            if(count == k) {
-                break;
-            }
-            visited[x][y] = true;
+        while(count < k) {
             int nx = x + dx[d];
             int ny = y + dy[d];
-            if(nx < 0 || nx >= r || ny < 0 || ny >= c
-                    || visited[nx][ny] ) {
+            if(nx < 0 || nx >= c || ny < 0 || ny >= r
+                    || seat[nx][ny] > 0) {
                 d = (d + 1) % 4;
                 continue;
             }
+            seat[x][y] = count;
             count++;
             x = nx;
             y = ny;
         }
-        answer[0] = y+1;
-        answer[1] = x+1;
+        answer[0] = x + 1;
+        answer[1] = y + 1;
         return answer;
     }
 
