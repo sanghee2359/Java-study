@@ -1,40 +1,30 @@
 package inflearn.Implementation;
-
+import java.util.*;
 public class MaxLengthBitonic {
     // 최대 길이 바이토닉 수열 -> 연속부분수열 중 가장 긴 바이토닉 수열 찾기
     public int solution(int[] nums){
-        int answer = 0; // 길이
-        int len = 1;
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < nums.length - 2; i++) {
-            // 3원자씩 비교
-            // 1.값이 클 경우
-            if(nums[i] < nums[i+1]) {
-                len++;
-                continue;
+        int answer = 0;
+        // 1. 봉우리가 되는 지점 찾기
+        ArrayList<Integer> peak = new ArrayList<>();
+        for (int i = 1; i < nums.length - 1; i++) {
+            if(nums[i-1] < nums[i] && nums[i] > nums[i+1]) {
+                peak.add(i);
             }
-            // 3원소 연속으로 값이 계속 작아질 경우
-            else if(nums[i] > nums[i+1] && nums[i+1] > nums[i+2]) {
-                // 다시 작아지기만 해야 바이너리 수열이며, 숫자가 커진다면 종료
-                // 바이너리 수열의 개수 추가
-                while(nums[i] > nums[i+1] && nums.length - 1 != i+1) {
-                    i++;
-                    len++;
-                }// 맨 마지막 원소. 이걸 잡지 못하고 있는게 원인이다
-            }
-            // 2.작아지고 커질 경우
-            else if(nums[i] > nums[i+1] && nums[i+1] < nums[i+2]) {
-                len = 1;
-                continue;
-
-            } // 3.중복값
-            else if(nums[i] == nums[i+1]) len =1;
-
-
-
-            if(max < len) max = len;
         }
-        answer = max;
+        for (int x : peak) {
+            int left = x, right = x;
+            int count = 1;
+            // i인덱스의 왼쪽
+            while( left - 1 >= 0 && nums[left] > nums[left -1]) {
+                count++;
+                left--;
+            }
+            while( right+1 < nums.length && nums[right] > nums[right+1])  {
+                count++;
+                right++;
+            }
+            answer = Math.max(count, answer);
+        }
         return answer;
     }
 
