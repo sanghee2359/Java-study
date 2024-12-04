@@ -1,56 +1,67 @@
 package inflearn.Implementation;
 import java.util.*;
-// a는 사과만, b 배만, c는 귤이 담겨있고 학생은 3중 하나 가져간다
-// 허나 조건으로 이 셋 바구니 중 가장 적게 과일이 담긴 바구니를 가져가야 한다.
-// 한 번 다른 사람과 하나의 과일 바구니 안의 과일 한 개를 교환가능
-// 최대한 현재의 최소값을 높이는 방법이 이득이 생기는 것이다.
-// 서로 이득인 경우 -> 나의 최소 개수 과일을 상대가 가져가려 하면 안되겠지
 
+// 서로 교환했을 때 이득이 나는 조건 (세분화)
+// 1. 각 학생의 최솟값은 유일(최소개수의 과일이 여러 개이면 안됨)
+// 2. 서로 교환하려고 하는 두 학생의 과일이 서로 달라야 함
+// 3. 교환했을 때 +1 증가된 과일의 최소개수가 이전처럼 과일 중 최솟값임이 유지되어야 함
+
+// 리팩토링 :
 public class TakingFruit {
+    public int getMin(int[] fruit) { // 최소값
+        int min = 100;
+        for(int x : fruit) {
+            min = Math.min(min, x);
+        }
+        return min;
+    }
+    public Boolean isMinUnique(int[] fruit) {
+        int cnt = 0;
+        int min = getMin(fruit);
+        for (int x : fruit) {
+            if(x == min) cnt++;
+        }
+        return cnt == 1;
+    }
+    public int getMinIdx(int[] fruit) {
+        int min = getMin(fruit);
+        for (int i = 0; i < 3; i++) {
+            if (fruit[i] == min) return i;
+        }
+        return 0;
+    }
 
     public int solution(int[][] fruit){
         int answer = 0;
         int n = fruit.length; // 학생 수
-        int[] min_volume = new int[n];
-        int[] min_value = new int[n];
-        // 즉, 나의 최소과일은 상대는 넉넉해야하고,
-        // 또한 상대의 최소과일을 내가 넉넉히 ㄱ갖고 있는 과일이어야하겠다.
-        for (int i = 0; i < n; i++) {
-            int min = Integer.MAX_VALUE;
-            int idx = 0;
-            for (int j = 0; j < 3; j++) {
-                if (fruit[i][j] < min) {
-                    min = fruit[i][j]; // 사과, 배, 귤 증 최소 개수의 과일의 인덱스를 저장
-                    idx = j;
-                }
-            }
-            min_volume[i] = idx;
-        }
-        System.out.println(Arrays.toString(min_volume));
+        int[] ch = new int[n];
+
         for(int i=0; i < n; i++ ){
-            if(min_value[i] > 0) continue;
+            if(ch[i] == 1) continue;
+            if(!isMinUnique(fruit[i])) continue;
             for (int j = i+1; j < n; j++) {
-                int d1 = min_volume[i];
-                int d2 = min_volume[j];
-                if(d1 != d2  // 서로의 최소 개수의 과일이 서로 다르고
-                        && min_value[i] == 0    // 교환한 적 없는 학생끼리만 교환
-                        && min_value[j] == 0) {
-                    min_value[i] = fruit[i][d1] + 1; // 상대의 과일을 하나
-                    min_value[j] = fruit[j][d2] + 1;
-                    System.out.println(i+"학생의 최소 개수 교환 후 : "+min_value[i]);
-                    System.out.println(j+"학생의 최소 개수 교환 후 : "+min_value[j]);
-                    break;
+                if(ch[j] == 1) continue;
+                if(!isMinUnique(fruit[j])) continue;
+                int d1 = getMinIdx(fruit[i]);
+                int d2 = getMinIdx(fruit[j]);
+                if(d1 != d2 && fruit[i][d2] > 0 && fruit[j][d1] > 0){
+                    if(fruit[i][d1] + 1 <= fruit[i][d2] - 1
+                            && fruit[j][d2] + 1 <= fruit[j][d1] - 1) {
+                        fruit[i][d1] ++;
+                        fruit[j][d2] ++;
+                        fruit[i][d2] --;
+                        fruit[j][d1] --;
+                        ch[i] = 1;
+                        ch[j] = 1;
+                        break;
+                    }
                 }
             }
         }
-        for (int i = 0; i < n; i++) {
-            if(min_value[i] == 0) {
-                int d = min_volume[i];
-                min_value[i] = fruit[i][d];
-                System.out.println("교환 못한 학생의 최소과일 개수 : "+min_value[i]);
-            }
+        for(int[] x : fruit) {
+            answer += getMin(x);
         }
-        answer = Arrays.stream(min_value).sum();
+        System.out.println(Arrays.toString(ch));
 
 
         return answer;
