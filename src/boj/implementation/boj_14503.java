@@ -6,54 +6,48 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+// 움직일 때마다 주변 4칸을 모두 살펴야 하는걸까? -> 한칸씩 d(방향)를 변화하며 이동
 public class boj_14503 {
     public int solution(int[][] room, int x, int y, int d) {
-        int[] dx = {-1, 0, 1, 0}; // 반시계 방향
-        int[] dy = {0, -1, 0, 1};
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
 
         int count = 0;
 
         while(true) {
-            if(room[x][y] != 2) {
+            if(room[x][y] == 0) {
                 count++; // 현재 칸 청소
                 room[x][y] = 2;
             }
-             boolean flag = false;
-            // 주변의 4칸 중 청소되지 않은 빈 칸이 없는 경우
-            // 바라보는 방향 유지한 채로 한 칸 후진.
-            // 뒤쪽 칸이 벽이라 후진할 수 엇다면 작동 주
-            // 4 칸을 다 확인?
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-            if(room[nx][ny] == 0) {
-                x = nx;
-                y = ny;
-                continue;
-            }
-            // 1로 막혔을 경우 4칸 방향 살펴보기
-            for (int i = 1; i < 4; i++) {
-                int curDirection = (d + i) % 4;
-                nx = x + dx[curDirection];
-                ny = y + dy[curDirection];
+             boolean cleaned = false;
+
+            for (int i = 0; i < 4; i++) {
+                d = (d + 3) % 4; // 반시계 방향 회전
+                int nx = x + dx[d];
+                int ny = y + dy[d];
+
                 if(room[nx][ny] == 0) {
                     x = nx;
                     y = ny;
-                    d = curDirection;
-                    flag = true; // 4칸 중 빈 칸이 있었는가?
+                    cleaned = true; // 4칸 중 한 칸이라도 빈 칸이 있었는가?
                     break;
                 }
             }
-            if(!flag) {
-                nx = x - dy[d]; // 바라본 방향 그대로 한 칸 후진
-                ny = y - dx[d];
-                if(room[nx][ny] == 1) break;
-                x = nx;
-                y = ny;
-                // 4칸 중 빈칸이 없는 경우(모두 2)
+            if(!cleaned) {  // 4방향 모두 청소 불가
+                int backX = x - dx[d]; // 후진
+                int backY = y - dy[d];
+                if(room[backX][backY] == 1) break;
+                x = backX;
+                y = backY;
+                // 4칸 중 빈칸이 없는 경우(모두 2 또는 1)
                 // -> 후진[방향 d]
                 // -> 벽에 막혀 후진도 못하면 종료
 
             }
+
+        }
+        for (int i = 0; i < room.length; i++) {
+            System.out.println(Arrays.toString(room[i]));
         }
         return count;
     }
