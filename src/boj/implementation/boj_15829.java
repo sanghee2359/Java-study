@@ -7,18 +7,13 @@ public class boj_15829 {
     // 항의 번호에 해당하는 만큼 특정한 숫자를 거듭제곱해서 곱해준 다음 더하는 것
     // r(특정한 숫자)의 거듭제곱
     public long hashing(char[] input) {
-        long answer = 0, square = 0;
-        int num = 0, r = 31, n = input.length;
+        long answer = 0, pow = 1;
+        int r = 31, n = input.length;
         for (int i = 0; i < n; i++) {
-            num = input[i] - 96;
-            square = 1;
-            // r을 i제곱수만큼 = i개수만큼 r을 곱한다
-            for (int j = 0; j < i; j++) {
-                square *= r;
-            }
-            answer += (num * square);
+            answer += ((input[i] - 96) * pow);
+            pow = (pow * r) % 1234567891; // mod M을 하지 않아서 부분점수를 받았다!
         }
-        return answer;
+        return answer % 1234567891;
     }
     public static void main(String[] args) {
         boj_15829 T = new boj_15829();
