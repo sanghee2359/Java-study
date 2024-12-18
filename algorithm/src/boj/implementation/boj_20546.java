@@ -24,13 +24,9 @@ public class boj_20546 {
         int upCount = 0, downCount = 0;
         int shareOwnership = 0;
         int n = MachineDuck.length;
-        boolean skipNext = false;
 
         for (int i = 0; i < n - 1; i++) {
-            if (skipNext) {
-                skipNext = false;
-                continue; // 반복문 건너뜀
-            }
+
             // 주가에 따른 조건
             if(MachineDuck[i+1] > MachineDuck[i]) {
                 upCount++;
@@ -43,22 +39,18 @@ public class boj_20546 {
                 upCount = 0;
                 downCount = 0;
             }
-            // 전량 매도 : 3일 연속 상승
+            // 3일 연속 상승 -> 전량 매도
             if(upCount >= 3 && shareOwnership > 0) {
                 cash += MachineDuck[i+1] * shareOwnership;
-                upCount = 0;
                 shareOwnership = 0;
-                skipNext = true; // 다음 날 건너뛰기
-                System.out.println(i+2+"일 전량 매도");
+//                System.out.println(i+2+"일 전량 매도");
             }
-            // 전량 매수
+            // 3일 연속 하락 -> 전량 매수
             if(downCount >= 3 && cash >= MachineDuck[i + 1]) {
                 int maxShares = cash / MachineDuck[i+1];
                 shareOwnership += maxShares;
                 cash -= maxShares * MachineDuck[i+1]; // 매수할 수 있는 금액만큼
-                downCount = 0;
-                skipNext = true; // 다음 날 건너뛰기
-                System.out.println(i+2+"일 "+maxShares+"주 매수");
+//                System.out.println(i+2+"일 "+maxShares+"주 매수");
             }
         }
         return result(cash, MachineDuck[13], shareOwnership);
@@ -77,7 +69,10 @@ public class boj_20546 {
         }
         int BNPResult  = T.BNP(cash,MachineDuck);
         int ThreeResult = T.ThreeThree(cash,MachineDuck);
-        if(BNPResult > ThreeResult) System.out.println("BNP" +" "+BNPResult);
-        else System.out.println("TIMING"+" "+ThreeResult);
+        if(BNPResult > ThreeResult)
+            System.out.println("BNP");
+        else if(BNPResult < ThreeResult)
+            System.out.println("TIMING");
+        else System.out.println("SAMESAME");
     }
 }
