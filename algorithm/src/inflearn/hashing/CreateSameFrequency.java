@@ -2,7 +2,6 @@ package inflearn.hashing;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class CreateSameFrequency {
@@ -12,11 +11,17 @@ public class CreateSameFrequency {
         for(char x : string.toCharArray()) {
             map.put(x, map.getOrDefault(x, 0) + 1); // 키의 default 값 0
         }
-        int maxValue = Collections.max(map.values());
-        int idx = 0;
-        for (char i = 'a'; i < 'f'; i++) {
-            // a, b, c, d, e 에서 채워야할 개수만큼 answer 배열에 저장
-            answer[idx++] = maxValue - map.getOrDefault(i, 0);
+        // 최대값 탐색
+        int maxValue = Integer.MIN_VALUE;
+        String tmp = "abcde";
+        for(char key : tmp.toCharArray()) {
+            if(map.getOrDefault(key, 0) > maxValue) {
+                maxValue = map.getOrDefault(key, 0);
+            }
+        }
+        // a, b, c, d, e 각 키들의 값을 가져와 max값과 비교 후 필요한 숫자만큼 answer 배열에 저장
+        for (int i = 0; i < tmp.length(); i++) {
+            answer[i] = maxValue - map.getOrDefault(tmp.charAt(i), 0);
         }
         return answer;
     }
