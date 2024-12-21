@@ -4,21 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-
-class Data implements Comparable<Data> {
-    String name;
-    int time;
-    int index;
-    Data(String name, int time, int index) {
-        this.name = name;
-        this.time = time;
-        this.index = index;
-    }
-    @Override
-    public int compareTo(Data o) {
-        return this.name.compareTo(o.name); // 알파벳 순으로 오름차순
-    }
-}
 public class WarningMail {
     public int getTime(String time) {
         int H = Integer.parseInt(time.split(":")[0]);
@@ -33,9 +18,8 @@ public class WarningMail {
             String time = x.split(" ")[1];
             String access = x.split(" ")[2];
 
-            if(access.equals("in")) { // 데이터 저장
-                tmp.put(name, getTime(time));
-            }else if(access.equals("out")) { // in부터 현재 time을 뺀 값을 누적합에 저장
+            if(access.equals("in")) tmp.put(name, getTime(time));
+            else if(access.equals("out")) { // in부터 현재 time을 뺀 값을 누적합에 저장
                 int use = getTime(time) - tmp.get(name);
                 timeOfUse.put(name, timeOfUse.getOrDefault(name, 0) + use); // 이용시간에 누적
             }
@@ -44,7 +28,7 @@ public class WarningMail {
         for(String x : timeOfUse.keySet()) {
             if(timeOfUse.get(x) > timeLimit) result.add(x);
         }
-        Collections.sort(result);
+        result.sort(String::compareTo);
         return result.toArray(new String[0]);
     }
 
