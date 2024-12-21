@@ -26,28 +26,23 @@ public class WarningMail {
         return H * 60 + M;
     }
     public String[] solution(String[] reports, int timeLimit){
-        String[] answer = {};
-        ArrayList<Data> tmp = new ArrayList<>();
+        HashMap<String, Integer> tmp = new HashMap<>();
         HashMap<String, Integer> timeOfUse = new HashMap<>();
-        int idx = 0;
         for(String x : reports) {
             String name = x.split(" ")[0];
             String time = x.split(" ")[1];
             String access = x.split(" ")[2];
 
             if(access.equals("in")) { // 데이터 저장
-                tmp.add(new Data(name, getTime(time), idx++));
+                tmp.put(name, getTime(time));
             }else if(access.equals("out")) { // in부터 현재 time을 뺀 값을 누적합에 저장
-                // out했을 때 시간 - in했을 때 시간
-                // in 했을 때의 time을 어떻게 arrayList에서 꺼내올 것인가
-                int use = getTime(time) - tmp.get(idx).time; // -> 문제 발생
-                tmp.remove(idx);
-                timeOfUse.put(name, timeOfUse.get(name) + use); // 이용시간에 누적
+                int use = getTime(time) - tmp.get(name);
+                timeOfUse.put(name, timeOfUse.getOrDefault(name, 0) + use); // 이용시간에 누적
             }
         }
         ArrayList<String> result = new ArrayList<>();
         for(String x : timeOfUse.keySet()) {
-            if(timeOfUse.get(x) >= timeLimit) result.add(x);
+            if(timeOfUse.get(x) > timeLimit) result.add(x);
         }
         Collections.sort(result);
         return result.toArray(new String[0]);
