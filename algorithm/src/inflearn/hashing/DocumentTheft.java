@@ -2,38 +2,49 @@ package inflearn.hashing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-
+import java.util.Collections;
+// import java.util.HashMap; -> 데이터의 순서가 보장되지 않는다
+// class 활용
+class Info implements Comparable<Info> {
+    public String name;
+    public int time;
+    Info(String name, int time) { // 생성자
+        this.name = name;
+        this.time = time;
+    }
+    @Override
+    public int compareTo(Info object) {
+        return this.time - object.time; // 시간 순 오름차순
+    }
+}
 public class DocumentTheft {
+    public int getTime(String time) {
+        int H = Integer.parseInt(time.split(":")[0]);
+        int M = Integer.parseInt(time.split(":")[1]);
+        return H * 60 + M;
+    }
     public String[] solution(String[] reports, String times) {
-        ArrayList<String> answer = new ArrayList<>();
-        HashMap<String, ArrayList<Integer>> reportMap = new HashMap<>(); // 이름을 key, 시간을 value
+        ArrayList<Info> tmp = new ArrayList<>();
         for (String x : reports) {
             String name = x.split(" ")[0];
             String time = x.split(" ")[1];
-            reportMap.putIfAbsent(name, new ArrayList<>());
-            reportMap.get(name).add(Integer.parseInt(time.split(":")[0]));
-            reportMap.get(name).add(Integer.parseInt(time.split(":")[1]));
+            tmp.add(new Info(name, getTime(time)));
         }
+        Collections.sort(tmp);
         String from = times.split(" ")[0];
         String to = times.split(" ")[1];
-        int fromTime = Integer.parseInt(from.split(":")[0]);
-        int fromMinute = Integer.parseInt(from.split(":")[1]);
-        int toTime = Integer.parseInt(to.split(":")[0]);
-        int toMinute = Integer.parseInt(to.split(":")[1]);
-        for (String x : reportMap.keySet()) {
-            int curTime = reportMap.get(x).get(0);
-            int curMinute = reportMap.get(x).get(1);
-            // 반대의 경우로 if 문 작성
-            if (curTime < fromTime || curTime > toTime
-                    || curTime == fromTime && curMinute < fromMinute
-                    || curTime == toTime && curMinute > toMinute) {
-                continue;
-            }
-            answer.add(x);
 
+        // 분 단위로 데이터 값을 변경하면, 간단하게 분류 가능
+        int fromTime = getTime(from);
+        int toTime = getTime(to);
+        ArrayList<String> result = new ArrayList<>();
+        for (Info obj : tmp) {
+            if(obj.time >= fromTime && obj.time <= toTime){
+                result.add(obj.name);
+            }
+            if(obj.time > toTime) break; // tmp가 시간순 정렬이 되어있기 때문
         }
-        return answer.toArray(new String[answer.size()]);
+        return result.toArray(new String[0]);
     }
 
     public static void main(String[] args){
