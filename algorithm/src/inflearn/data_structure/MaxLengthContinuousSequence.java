@@ -1,29 +1,24 @@
 package inflearn.data_structure;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class MaxLengthContinuousSequence {
     // 1씩 증가하는 연속된 수열의 최대 길이
+    // nums의 길이가 300,000 이하 -> 효율성 테스트
+    //
     public int solution(int[] nums){
         int answer = 0;
-        ArrayList<Integer> set = new ArrayList<>();
-        for (int i = 0; i < nums.length; i++) {
-            if(set.contains(nums[i])) continue;
-            set.add(nums[i]);
-        }
-        Collections.sort(set);  // 정렬
-        int sum = 1;            // 연속 수열의 길이 합
-        for (int i = 0; i < set.size() - 1; i++) {
-            if(set.get(i) + 1 == set.get(i+1)) {
-                sum++;
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) set.add(x);
+        for (int x : set) {
+            if(set.contains(x - 1)) continue;
+            int count = 0;
+            while(set.contains(x)) {
+                count++;
+                x++;
             }
-            else {
-                answer = Math.max(sum, answer);
-                sum = 1;
-            }
+            answer = Math.max(answer, count);
         }
-        answer = Math.max(sum, answer);
         return answer;
     }
 
