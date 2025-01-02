@@ -10,39 +10,37 @@ public class OrderOfEntry {
         int[] answer = new int[num];
         Queue<Integer> enter = new LinkedList<>();
         Queue<Integer> exit = new LinkedList<>();
-        for (int i = 0; i < arrival[num - 1]; i++) {
-            while(arrival[++i] == i) {
-                if(arrival[i] == i && state[i] == 0) {
-                    enter.add(i);
-                }
-                else if(arrival[i] == i && state[i] == 1){
-                    exit.add(i);
+        for (int i = 0, t = 0, count = 0;; t++) {
+            if (i < num && enter.isEmpty() && exit.isEmpty()) {
+                if(t < arrival[i]){
+                    t = arrival[i]; // 건너 뛰기
+                    prev = 1;
                 }
             }
-
-            if(prev == 1) {
-                Integer employeeNum = exit.poll();
-                answer[employeeNum] = i;
-            }else if(exit.isEmpty()) {
-                Integer employeeNum = enter.poll();
-                answer[employeeNum] = i;
-                prev = 0;
-            }else {
-                Integer employeeNum = enter.poll();
-                answer[employeeNum] = i;
+            // t와 같은 시간에 도착한 i 사원들을 모두 큐에 저장
+            while (i < num && arrival[i] <= t) { // 종료 조건
+                if (state[i] == 0) enter.offer(i);
+                else exit.offer(i);
+                i++;
             }
-
+            if (prev == 1) { // 현재 나가는 사람 우선 조건일 경우
+                if (!exit.isEmpty()) {
+                    answer[exit.poll()] = t;
+                } else { // exit 대기 줄이 비어있으면 enter에서 현관문 이용
+                    answer[enter.poll()] = t;
+                    prev = 0;
+                }
+            } else if (prev == 0) {
+                if (!enter.isEmpty()) {
+                    answer[enter.poll()] = t;
+                } else {
+                    answer[exit.poll()] = t;
+                    prev = 1;
+                }
+            }
+            count++;
+            if (count == num) return answer;
         }
-            // 1. 1초 전에 사용한 적 없다면 arrival[i]-1 이 큐에 없으면
-            // state[i] = 1 (나가는 사람) 먼저 현관 이용
-            // 2-1. 1초 전에 state[i] = 1(나가는 사람)이 이용했다면
-            // 겹치는 경우 나가는 사원 먼저 사용
-
-            // 2-2. 1초 전에 state[i] = 0(들어오는 사람)이 이용했다면
-            // 겹치는 경우 들어오는 사원 먼저 이용
-            // 3. 같은 방향이고, 값이 같아면 i(사원번호)가 낮은 사람먼저
-
-        return answer;
     }
 
 
