@@ -25,25 +25,28 @@ public class Dermatology {
         return options;
     }
     public int solution(int[] laser, String[] enter){
-        int max = Integer.MIN_VALUE;
+        int max = 0;
         int n = enter.length;
-        int count = 1;
-        int[] enterTime = arrivalTimeCalculation(enter);
+        int[] arrivalTime = arrivalTimeCalculation(enter);
         int[] treatments = customerTreatmentOptions(enter);
+        int count = 0;
         Queue<Integer> waiting = new LinkedList<Integer>();
-        waiting.offer(enterTime[0]); // 첫 번째 손님
-        for (int i = 0; ; i++) {
+        waiting.offer(treatments[0]); // 첫 번째 손님
+        for (int i = 0, t = 0; ; i++) {
             int arrival = 0, endTime = 0;
             if(!waiting.isEmpty()) {
-                arrival = waiting.poll();
-                endTime = arrival + laser[treatments[i]]; // i 고객이 받을 laser 수술
+                arrival = arrivalTime[i];
+                endTime = arrival + laser[waiting.poll()]; // i 고객이 받을 laser 수술
+            }else {
+                endTime = endTime + treatments[i];
             }
-            while(arrival != 0 && enterTime[++i] < endTime) { //i 1씩 증가
-                waiting.offer(enterTime[i]);
+
+            while(arrival != 0 && count < n && arrivalTime[count] < endTime ) { //i 1씩 증가 -> 시술이 끝나기 전에 도착한 손님들일 경우
+                waiting.offer(treatments[count]); // 그 손님이 받을 수술 옵션을 waiting 큐에 저장
                 count++;
-                max = Math.max(waiting.size(), max);
             }
-            if(count == n - 1) return max;
+            max = Math.max(waiting.size(), max);
+            if(count == n) return max;
         }
     }
 
