@@ -25,8 +25,9 @@ public class Dermatology {
         int endTime = inList[0][0]; // 수술이 각각 끝나는 시간을 저장
         int pos = 1;
         for (int t = endTime; t <= 1200; t++) {  // 20:00 까지만 피부과 운영
-            if(pos < n && t == inList[pos][0]) { // 고객이 도착하면
-                if(waiting.isEmpty() && inList[pos][0] > endTime) endTime = inList[pos][0]; // 만약 대기 줄이 없었다면 바로 시술
+            if(pos < n && t == inList[pos][0]) { // 아직 처리할 고객이 있고, 현재 시간이 도착 시간과 같을 때
+                // 마지막으로 수술한 시간보다 도착한 시간이 넘어가고, 만약 대기도 없다면 바로 시술
+                if(waiting.isEmpty() && inList[pos][0] > endTime) endTime = inList[pos][0];
                 waiting.offer(inList[pos][1]); // 현재 수술중인 고객이 끝날때까지 대기 큐에 저장
                 pos++;
             }
