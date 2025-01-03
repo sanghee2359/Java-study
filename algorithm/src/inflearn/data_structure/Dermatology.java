@@ -4,50 +4,39 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Dermatology {
-    private int[] arrivalTimeCalculation(String[] enter) {
-        int n = enter.length;
-        int[] answer = new int[n];
-        for (int i = 0; i < n; i++) {
-            String[] tmp = enter[i].split("[ :]+");
-            int hour = Integer.parseInt(tmp[0]);
-            int minute = Integer.parseInt(tmp[1]);
-            answer[i] = hour * 60 + minute;
-        }
-        return answer;
-    }
-    private int[] customerTreatmentOptions(String[] treatments) {
-        int n = treatments.length;
-        int[] options = new int[n];
-        for (int i = 0; i < n; i++) {
-            String[] tmp = treatments[i].split(" ");  // 공백을 기준으로 분리
-            options[i] = Integer.parseInt(tmp[1]);  // 두 번째 부분이 수술 옵션 (정수값으로 처리)
-        }
-        return options;
+    private int getTime(String time) {
+        int H = Integer.parseInt(time.split(":")[0]);
+        int M = Integer.parseInt(time.split(":")[1]);
+        return H * 60 + M;
     }
     public int solution(int[] laser, String[] enter){
-        int max = 0;
+        int answer = 0;
         int n = enter.length;
-        int[] arrivalTime = arrivalTimeCalculation(enter);
-        int[] treatments = customerTreatmentOptions(enter);
-        int count = 0;
+        int[][] inList = new int[n][2];
         Queue<Integer> waiting = new LinkedList<Integer>();
-        waiting.offer(treatments[0]); // 첫 번째 손님
-        for (int i = 0, t = 0; ; i++) {
-            int arrival = 0, endTime = 0;
-            if(!waiting.isEmpty()) {
-                arrival = arrivalTime[i];
-                endTime = arrival + laser[waiting.poll()]; // i 고객이 받을 laser 수술
-            }else {
-                endTime = endTime + treatments[i];
-            }
 
-            while(arrival != 0 && count < n && arrivalTime[count] < endTime ) { //i 1씩 증가 -> 시술이 끝나기 전에 도착한 손님들일 경우
-                waiting.offer(treatments[count]); // 그 손님이 받을 수술 옵션을 waiting 큐에 저장
-                count++;
-            }
-            max = Math.max(waiting.size(), max);
-            if(count == n) return max;
+        for (int i = 0; i < n; i++) {
+            int time = getTime(enter[i].split(" ")[0]);
+            int laserOp = Integer.parseInt(enter[i].split(" ")[1]);
+            inList[i][0] = time;
+            inList[i][1] = laserOp;
         }
+        waiting.offer(inList[0][1]); // 첫번째 시술 시작
+        int endTime = inList[0][0]; // 수술이 각각 끝나는 시간을 저장
+        int pos = 1;
+        for (int t = endTime; t <= 1200; t++) {  // 20:00 까지만 피부과 운영
+            if(pos < n && t == inList[pos][0]) { // 고객이 도착하면
+                if(waiting.isEmpty() && inList[pos][0] > endTime) endTime = inList[pos][0]; // 만약 대기 줄이 없었다면 바로 시술
+                waiting.offer(inList[pos][1]); // 현재 수술중인 고객이 끝날때까지 대기 큐에 저장
+                pos++;
+            }
+            if(t == endTime && !waiting.isEmpty()) {
+                int idx = waiting.poll(); // 시술이 끝나며, 대기줄의 다음 고객의 수술 진행
+                endTime += laser[idx];
+            }
+            answer = Math.max(answer, waiting.size());
+        }
+        return answer;
     }
 
     public static void main(String[] args){
