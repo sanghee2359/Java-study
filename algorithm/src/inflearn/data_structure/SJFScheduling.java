@@ -17,17 +17,22 @@ public class SJFScheduling {
         Collections.sort(sort);
         Task first = sort.get(0);
         readyQ.offer(first);
-        endTime = first.arrivalTime + first.taskTime;
-        for (int i = 1, t = endTime; ; i++) {
+        endTime = first.arrivalTime; // 초기화
+        for (int i = 1, t = endTime; ; t++) { // i는 arrayList의 배열 인덱스
+            // 도착시간이 작업이 끝나기 전까지의 시간보다 작거나 같다면 큐에 저장
+            while(i < n && sort.get(i).arrivalTime <= endTime) {
+                readyQ.offer(sort.get(i));
+                i++;
+            }
             if(endTime == t && !readyQ.isEmpty()){
                 // answer에 저장
                 Task cur = readyQ.poll();
-                answer[cur.num] = order++;
+                answer[order++] = cur.num; // order은 작업 순서 인덱스
                 endTime = endTime + cur.taskTime;
             }
-            while(i < n && sort.get(i).arrivalTime <= t) {
-                readyQ.offer(sort.get(i));
-                i++;
+            if(readyQ.isEmpty() && endTime < sort.get(i).arrivalTime) {
+                t = endTime = sort.get(i).arrivalTime;
+                readyQ.offer(sort.get(i++));
             }
 
             if(order == n - 1) return answer;
@@ -46,25 +51,13 @@ class Task implements Comparable<Task> {
     int num;
     int arrivalTime;
     int taskTime;
-
     public Task(int num,int arrivalTime, int taskTime) {
         this.num = num;
         this.arrivalTime = arrivalTime;
         this.taskTime = taskTime;
     }
-
-    /**
-     *
-     * 도착 시간을 기준으로 정렬하고, 같다면 작업시간 순으로 정렬
-     * @return
-     */
-
     @Override
     public int compareTo(Task o) {
-        int r = this.arrivalTime - o.arrivalTime;
-        if(r == 0) {
-            r = this.taskTime - o.taskTime;
-        }
-        return r;
+        return this.arrivalTime - o.arrivalTime;
     }
 }
