@@ -1,20 +1,26 @@
 package inflearn.sorting;
 import java.util.*;
 public class BinarySorting {
+    public int oneInBinary(int num) {
+        int count = 0;
+        // toBinaryString 같은거 말고, 직접 tmp%2 로 나머지를 구해서 값을 찾아나간다
+        while(num > 0) {
+            count += (num % 2); // 나머지는 0또는 1일 것. 누적 합이 결국 1의 개수가 된다.
+            num /= 2;
+        }
+        return count;
+    }
     public int[] solution(int[] nums){
         int[] answer = new int[nums.length];
-        ArrayList<Num> numList = new ArrayList<>();
+        int[][] result = new int[nums.length][2];
         for (int i = 0; i < nums.length; i++) {
-            numList.add(new Num(nums[i]));
+            result[i][0] = nums[i];
+            result[i][1] = oneInBinary(nums[i]);// 이진수 개수의 값.
         }
-        System.out.println(numList);
-        Collections.sort(numList);
-        System.out.println(numList);
-        int idx= 0;
-        for(Num x : numList) {
-            answer[idx++] = x.decimal;
+        Arrays.sort(result, (a, b)-> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1]);
+        for (int i = 0; i < nums.length; i++) {
+            answer[i] = result[i][0];
         }
-
         return answer;
     }
 
@@ -24,25 +30,5 @@ public class BinarySorting {
         System.out.println(Arrays.toString(T.solution(new int[]{5, 4, 3, 2, 1})));
         System.out.println(Arrays.toString(T.solution(new int[]{12, 5, 7, 23, 45, 21, 17})));
     }
-}
-class Num implements Comparable<Num> {
-    public int decimal;
-    public String binary;
-    public int numberOfOne;
 
-    public Num(int decimal) {
-        int count = 0;
-        this.decimal = decimal;
-        this.binary = Integer.toBinaryString(decimal);
-        while(binary.contains("1")) count++;
-        this.numberOfOne = count;
-    }
-
-    @Override
-    public int compareTo(Num o) {
-        if (this.numberOfOne == o.numberOfOne) {
-            return this.decimal - o.decimal;
-        }
-        return this.numberOfOne - o.numberOfOne;
-    }
 }
