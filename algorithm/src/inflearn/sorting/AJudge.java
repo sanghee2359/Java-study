@@ -4,30 +4,26 @@ import java.util.Arrays;
 
 public class AJudge {
     static Integer[] res;
-    public int average(int k, int i, int j) {
+    public int average(int[] score, int s, int e) {
         int sum = 0;
-        for (int l = i; l <= j; l++) {
-            sum += res[l];
+        for (int i = s; i <= e; i++) {
+            sum += score[i];
         }
-        return sum / k;
+        return (int)Math.floor((sum / (e - s +1) ));
     }
 
     public int solution(int[] score, int k){
-        int answer = 0, n = score.length;
-        boolean flag = false;
-        res = Arrays.stream(score).boxed().toArray(Integer[]::new);
-        Arrays.sort(res);
-        System.out.println(Arrays.toString(res));
-        for (int i = 0; i < n; i++) { // o 인덱스부터 시작
-            if(flag) break;
-            for (int j = n-1; j > i; j--) { // score j가 큰 값
-                if(j-i +1 == k && res[j] - res[i] <= 10){
-                    answer = average(k, i, j);
-                    flag = true;
-                }
+        int n = score.length;
+        Arrays.sort(score);
+        // k 슬라이딩 윈도우 크기
+        // 최대값 - 최소값을 구할 수 있는 최대한은 n - k
+        for (int i = 0; i < n - k; i++) {
+            // 최댓값 - 최소값
+            if(score[i + k - 1] - score[i] <= 10) {
+                return average(score, i, i + k - 1);
             }
         }
-        return answer;
+        return 0 ;
     }
 
     public static void main(String[] args){
