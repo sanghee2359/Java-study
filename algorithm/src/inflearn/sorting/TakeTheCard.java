@@ -6,25 +6,20 @@ import java.util.Collections;
 public class TakeTheCard {
     public int solution(int[] nums, int k){
         int answer = 0, n = nums.length;
-        Arrays.sort(nums);
-        int[][] result = new int[n][3];
-        int idx = n-1;
+        Integer[] tmp = Arrays.stream(nums).boxed().toArray(Integer[]::new);
+        Arrays.sort(tmp, (a, b)-> b - a); // 내림차순 정렬
+        Integer[] diff = new Integer[n/2];
         for (int i = 0; i < n/2; i++) {
-            for (int j = 0; j < 2; j++) {
-                result[i][j] = nums[idx--];
-            }
-            result[i][2] = result[i][0] - result[i][1];
+            answer += tmp[i * 2 + 1]; // 우선권이 없는 현수는 홀수 인덱스 값을 고름(더 작은 값)
+            diff[i] = tmp[i*2] - tmp[i*2+1]; // 편차를 저장
         }
-        Arrays.sort(result, (a, b) -> b[2] - a[2]);
-        for(int[] x : result) {
-            if(k > 0){
-                answer+= x[0];
-                k--;
-                continue;
-            }
-            answer += x[1];
-        }
+        Arrays.sort(diff, (a, b)-> b - a);
+        // 현수가 우선권을 사용하지 않았을 때 점수
+        // + k번만큼 우선권을 쓰고 얻은 점수 차 = 얻을 수 있는 최고점수
 
+        for(int i = 0; i < k; i++) {
+                answer += diff[i];
+        }
 
         return answer;
     }
