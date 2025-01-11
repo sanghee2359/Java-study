@@ -1,28 +1,38 @@
 package inflearn.sorting;
 
+import java.util.Arrays;
+
 public class MultiTasking {
     public int solution(int[] tasks, long k) {
         int answer = 0;
-        int idx = 0, n = tasks.length;
-        long time = k;
-        tasks[idx]--;
-        time--;
-        while(time != 0) {
-            idx = (idx + 1) % n; // 다음 작업 인덱스로 이동
-            if(tasks[idx] == 0) continue;
-            tasks[idx]--;
-            time--;
+        int res = tasks.length;
+        int[] sT = new int[res+1];
+        for (int i = 1; i < sT.length; i++) {
+            sT[i] = tasks[i - 1];
         }
-        // 마지막으로 한 작업의 다음으로 해야할 작업을 반환
-        idx = (idx + 1) % n;
-        if(tasks[idx] != 0) return idx;
-        // 바로 다음 작업이 완료되어 0일 경우
-        while(tasks[idx] == 0) {
-            idx = (idx + 1) %n;
-            if(tasks[idx] != 0) return idx;
+        Arrays.sort(sT);
+        // st에서 i를 통해 반복문 시작
+        for (int i = 1; i < sT.length; i++) {
+            int repeat = sT[i] - sT[i-1];
+            if(k - (long) res * repeat >= 0) {
+                k = k - (long) res * repeat;
+                res--; // 남은 작업 1 제외
+                continue;
+            }
+            // 이제 3이 남았음 -> sT가 아닌, 실제 작업스케쥴러에서 1씩 시뮬레이션
+            int idx = 0; // 작업스케쥴러 0번인덱스부터 작업 시뮬 시작
+            while(k>0) {
+                if(sT[i]> tasks[idx]) {
+                    idx = (idx + 1) % tasks.length;
+                    continue;
+                }
+                k--;
+                idx = (idx+1) % tasks.length; // 다음 인덱스로 이동
+            }
+            return idx + 1;
+
         }
-        return idx;
-//        return answer;
+        return -1;
     }
 
     public static void main(String[] args){
