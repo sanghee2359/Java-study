@@ -5,23 +5,18 @@ import java.util.Arrays;
 public class Titanic {
     public int solution(int[] nums, int m){
         int answer = 0;
-        int n = nums.length;
         Arrays.sort(nums);
-        for (int i = 0; i < n / 2; i++) {
-            for (int j = n-1; j > i; j--) {
-                if(nums[j] != 0 && nums[i] + nums[j] <= m)
-                {
-                    answer++;
-                    nums[i] = 0;
-                    nums[j] = 0;
-                    break;
-                }
+        int lt = 0, rt = nums.length - 1;
+        while(lt <= rt) {
+            if(nums[lt] + nums[rt] <= m) {
+                answer++;
+                lt++;
+                rt--;
+            }else {
+                answer++;
+                rt--;
             }
         }
-        for (int i = 0; i < n; i++) {
-            if(nums[i] != 0) answer++;
-        }
-
         return answer;
     }
 
