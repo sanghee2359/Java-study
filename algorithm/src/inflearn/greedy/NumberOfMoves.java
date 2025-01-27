@@ -1,6 +1,6 @@
 package inflearn.greedy;
 
-import java.util.*;
+import java.util.Arrays;
 
 
 public class NumberOfMoves {
@@ -9,16 +9,15 @@ public class NumberOfMoves {
     // 5,4,3,2
     public int solution(int[] nums){
         int answer = 0, n = nums.length;
-        Integer[] arr = Arrays.stream(nums).boxed().toArray(Integer[]::new);
-        Arrays.sort(arr, Collections.reverseOrder()); // 내림차순 정렬
+        Arrays.sort(nums); // 오름차순 정렬
         int lt = 0, rt = n - 1;
         while(lt <= rt) {
-            if(arr[lt]+arr[rt] > 5 && arr[lt] <= 5) {
+            if(nums[lt] + nums[rt] <= 5) {
                 answer++;
                 lt++;
+                rt--;
             }else {
                 answer++;
-                lt++;
                 rt--;
             }
         }
